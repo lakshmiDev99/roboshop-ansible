@@ -1,0 +1,26 @@
+# from app-preq.yml
+#echo -e "\e[31m>>>>>>>>>>>>>>> create $component service <<<<<<<<<<<<<<\e[0m"
+#cp $component.service /etc/systemd/system/$component.service &>>${log}
+#func_exit_status
+
+# from the common.sh
+#echo -e "\e[31m>>>>>>>>>>>>>>> start $component service <<<<<<<<<<<<<<\e[0m"
+#func_exit_status
+#
+#systemctl daemon-reload &>>${log}
+#systemctl enable $component &>>${log}
+#systemctl restart $component &>>${log}
+#}
+
+
+- name: Setup SysytemD service file
+  ansible.builtin.copy:
+    src: {{component}}.service
+    dest: /etc/systemd/system/$component.service
+
+- name: Start {{ component }} Service
+  ansible.builtin.systemd:
+    name: {{component}}
+    state: restarted
+    enables: yes
+    daemon_reload: yes

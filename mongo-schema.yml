@@ -1,0 +1,25 @@
+#if [ "$(schema_type)" == "mongodb" ] ; then
+#echo -e "\e[31m>>>>>>>>>>>>>>> install mongo client <<<<<<<<<<<<<<\e[0m"
+#yum install mongodb-org-shell -y &>>${log}
+#func_exit_status
+#
+#echo -e "\e[33m>>>>>>>>>>>>>>> load  user schema <<<<<<<<<<<<<<\e[0m"
+#func_exit_status
+#
+#mongo --host MONGODB-SERVER-IPADDRESS </app/schema/user.js &>>${log}
+#fi
+#
+
+- name: Copy MongoDB Yum repo file
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: install MongoDB Client
+  ansible.builtin.yum:
+    src: mongodb-org-shell
+    state: installed
+
+- name: Load Schema
+  ansible.builtin.shell: mongo --host MONGODB-SERVER-IPADDRESS </app/schema/user.js
+

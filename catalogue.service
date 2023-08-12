@@ -1,0 +1,12 @@
+[Unit]
+Description = $component Service
+
+[Service]
+User=roboshop
+Environment=MONGO=true
+Environment=MONGO_URL="mongodb://mongodb-dev.lakshmidev99.online:27017/$component"
+ExecStart=/bin/node /app/server.js
+SyslogIdentifier=$component
+
+[Install]
+WantedBy=multi-user.target

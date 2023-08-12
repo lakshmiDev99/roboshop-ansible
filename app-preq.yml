@@ -1,0 +1,53 @@
+#echo -e "\e[31m>>>>>>>>>>>>>>> create $component service <<<<<<<<<<<<<<\e[0m"
+#cp $component.service /etc/systemd/system/$component.service &>>${log}
+#func_exit_status
+#echo -e "\e[34m>>>>>>>>>>>>>>> create application user<<<<<<<<<<<<<<\e[0m"
+#func_exit_status
+#id roboshop &>>${log}
+#if [ $? -ne 0 ] ; then
+#useradd roboshop  &>>${log}
+#fi
+#func_exit_status
+#echo -e "\e[31m>>>>>>>>>>>>>>> remove the old content<<<<<<<<<<<<<<\e[0m"
+#rm -rf /app  &>>${log}
+#func_exit_status
+#
+#echo -e "\e[35m>>>>>>>>>>>>>>> create application Directory<<<<<<<<<<<<<<\e[0m"
+#
+#mkdir /app  &>>${log}
+#echo -e "\e[36m>>>>>>>>>>>>>>> download apllication content <<<<<<<<<<<<<<\e[0m"
+#func_exit_status
+#
+#curl -o /tmp/$component.zip https://roboshop-artifacts.s3.amazonaws.com/$component.zip &>>${log}
+#echo -e "\e[36m>>>>>>>>>>>>>>> extract apllication content <<<<<<<<<<<<<<\e[0m"
+#cd /app ${log}
+#unzip /tmp/$component.zip &>>${log}
+#func_exit_status
+#
+#cd /app &>>${log}
+#func_exit_status
+
+
+- name: add application user
+  ansible.builtin.user:
+    name: roboshop
+
+- name: Clean Old content
+  ansible.builtin.file:
+    path: /app
+    state: absent
+
+- name: Create App Directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+
+- name: Download and extract application content
+  ansible.builtin.unarchive:
+    src: https://roboshop-artifacts.s3.amazonaws.com/$component.zip
+    dest: /app
+    remote_src: yes
+
+
+
+
