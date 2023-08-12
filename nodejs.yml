@@ -38,4 +38,10 @@
     args:
       chdir: /app
 
+- name: Schema setup
+    ansible.builtin.import_tasks: mongo-schema.yml
+
+- name: SystemD setup
+    ansible.builtin.import_tasks: system-setup.yml
+
 
