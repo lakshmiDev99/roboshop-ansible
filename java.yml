@@ -1,0 +1,39 @@
+
+- name: Install maven
+  ansible.builtin.yum:
+    name: maven
+    state: installed
+
+- name: app pre-requisites
+    ansible.builtin.import_tasks: app-preq.yml
+
+- name: Download NodeJS Dependencies
+  ansible.builtin.shell: mvn clean package ; mv target/$component-1.0.jar shipping.jar
+    args:
+      chdir: /app
+
+- name: Schema setup
+    ansible.builtin.import_tasks: mongo-schema.yml
+    when: schema is defined
+
+- name: SystemD setup
+    ansible.builtin.import_tasks: systemd-setup.yml
+
+
+ # from common.sh from the roboshop-shell
+#    echo -e "\e[31m>>>>>>>>>>>>>>> install maven <<<<<<<<<<<<<<\e[0m"
+#    func_exit_status
+#
+#    yum install maven  &>>${log}
+#
+#    func_apprereq
+#
+#    echo -e "\e[31m>>>>>>>>>>>>>>> Build $component service <<<<<<<<<<<<<<\e[0m"
+#    func_exit_status
+#
+#    mvn clean package &>>${log}
+#    mv target/$component-1.0.jar shipping.jar &>>${log}
+#    func_schema_setup
+
+
+

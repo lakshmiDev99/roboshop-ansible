@@ -1,0 +1,35 @@
+- name: Install PYTHON
+  ansible.builtin.yum:
+    name:
+      - python36
+      - gcc
+      - python3-devel
+    state: installed
+
+- name: app pre-requisites
+    ansible.builtin.import_tasks: app-preq.yml
+
+- name: Download Python Dependencies
+  ansible.builtin.shell: pip3.6 install -r requirements.txt
+    args:
+      chdir: /app
+
+- name: SystemD setup
+    ansible.builtin.import_tasks: systemd-setup.yml
+
+
+#    echo -e "\e[31m>>>>>>>>>>>>>>> Build $component service <<<<<<<<<<<<<<\e[0m"
+#    func_exit_status
+#
+#  yum install python36 gcc python3-devel -y
+#  useradd roboshop
+#
+#  func_apprereq
+#  sed -i"s/rabbitmq_app_password/${rabbitmq_app_password}/" etc/systend/system/${componennt}.service
+#  echo -e "\e[31m>>>>>>>>>>>>>>> Build $component service <<<<<<<<<<<<<<\e[0m"
+#  func_exit_status
+#
+#  pip3.6 install -r requirements.txt
+#
+#  func_systemd
+
