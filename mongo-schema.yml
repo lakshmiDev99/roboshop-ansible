@@ -21,5 +21,5 @@
     state: installed
 
 - name: Load Schema
-  ansible.builtin.shell: mongo --host MONGODB-SERVER-IPADDRESS </app/schema/user.js
+  ansible.builtin.shell: mongo --host mongodb-dev.lakshmidev99.online </app/schema/{{component}}.js
 
